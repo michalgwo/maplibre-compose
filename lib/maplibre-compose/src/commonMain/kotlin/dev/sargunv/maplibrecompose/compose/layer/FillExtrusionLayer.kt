@@ -3,6 +3,7 @@ package dev.sargunv.maplibrecompose.compose.layer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key as composeKey
 import androidx.compose.ui.graphics.Color
+import dev.sargunv.maplibrecompose.compose.FeaturesClickHandler
 import dev.sargunv.maplibrecompose.core.expression.Expression
 import dev.sargunv.maplibrecompose.core.expression.Expression.Companion.const
 import dev.sargunv.maplibrecompose.core.expression.Expression.Companion.nil
@@ -11,7 +12,6 @@ import dev.sargunv.maplibrecompose.core.expression.Point
 import dev.sargunv.maplibrecompose.core.expression.TResolvedImage
 import dev.sargunv.maplibrecompose.core.layer.FillExtrusionLayer
 import dev.sargunv.maplibrecompose.core.source.Source
-import io.github.dellisd.spatialk.geojson.Feature
 
 /**
  * A fill extrusion layer draws polygons from the [sourceLayer] in the given [source] in the given
@@ -50,6 +50,8 @@ import io.github.dellisd.spatialk.geojson.Feature
  *   [height].
  * @param verticalGradient Whether to apply a vertical gradient to the sides of this layer. If
  *   `true`, sides will be shaded slightly darker farther down.
+ * @param onClick Function to call when any feature in this layer has been clicked.
+ * @param onLongClick Function to call when any feature in this layer has been long-clicked.
  */
 @Composable
 @Suppress("NOTHING_TO_INLINE")
@@ -69,8 +71,8 @@ public inline fun FillExtrusionLayer(
   height: Expression<Number> = const(0.0),
   base: Expression<Number> = const(0.0),
   verticalGradient: Expression<Boolean> = const(true),
-  noinline onClick: ((features: List<Feature>) -> Unit)? = null,
-  noinline onLongClick: ((features: List<Feature>) -> Unit)? = null,
+  noinline onClick: FeaturesClickHandler? = null,
+  noinline onLongClick: FeaturesClickHandler? = null,
 ) {
   composeKey(id) {
     LayerNode(

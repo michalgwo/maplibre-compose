@@ -3,6 +3,7 @@ package dev.sargunv.maplibrecompose.compose.layer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key as composeKey
 import androidx.compose.ui.graphics.Color
+import dev.sargunv.maplibrecompose.compose.FeaturesClickHandler
 import dev.sargunv.maplibrecompose.core.expression.Expression
 import dev.sargunv.maplibrecompose.core.expression.Expression.Companion.const
 import dev.sargunv.maplibrecompose.core.expression.Expression.Companion.nil
@@ -10,7 +11,6 @@ import dev.sargunv.maplibrecompose.core.expression.Expression.Companion.point
 import dev.sargunv.maplibrecompose.core.expression.Point
 import dev.sargunv.maplibrecompose.core.layer.CircleLayer
 import dev.sargunv.maplibrecompose.core.source.Source
-import io.github.dellisd.spatialk.geojson.Feature
 
 /**
  * A circle layer draws points from the [sourceLayer] in the given [source] in the given style as a
@@ -46,6 +46,8 @@ import io.github.dellisd.spatialk.geojson.Feature
  *   [radius]. A value in range `[0..infinity)`.
  * @param pitchScale Scaling behavior of circles when the map is pitched. See [CirclePitchScale].
  * @param pitchAlignment Orientation of circles when the map is pitched. See [CirclePitchAlignment].
+ * @param onClick Function to call when any feature in this layer has been clicked.
+ * @param onLongClick Function to call when any feature in this layer has been long-clicked.
  */
 @Composable
 @Suppress("NOTHING_TO_INLINE")
@@ -69,8 +71,8 @@ public inline fun CircleLayer(
   strokeWidth: Expression<Number> = const(0),
   pitchScale: Expression<String> = const(CirclePitchScale.Map),
   pitchAlignment: Expression<String> = const(CirclePitchAlignment.Viewport),
-  noinline onClick: ((features: List<Feature>) -> Unit)? = null,
-  noinline onLongClick: ((features: List<Feature>) -> Unit)? = null,
+  noinline onClick: FeaturesClickHandler? = null,
+  noinline onLongClick: FeaturesClickHandler? = null,
 ) {
   composeKey(id) {
     LayerNode(

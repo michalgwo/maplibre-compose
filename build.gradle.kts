@@ -9,8 +9,11 @@ plugins {
   alias(libs.plugins.kotlin.cocoapods) apply false
   alias(libs.plugins.spotless)
   alias(libs.plugins.dokka)
-  alias(libs.plugins.maven.publish) apply false
 }
+
+dokka { moduleName = "MapLibre Compose" }
+
+dependencies { dokka(project(":lib:maplibre-compose:")) }
 
 spotless {
   kotlinGradle { ktfmt().googleStyle() }
@@ -21,6 +24,10 @@ spotless {
   flexmark {
     target("**/*.md")
     flexmark()
+  }
+  yaml {
+    target("**/*.yml", "**/*.yaml")
+    prettier().config(mapOf("quoteProps" to "consistent"))
   }
 }
 

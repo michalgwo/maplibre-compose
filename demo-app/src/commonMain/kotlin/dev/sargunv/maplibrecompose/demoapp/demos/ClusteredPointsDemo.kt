@@ -2,9 +2,16 @@ package dev.sargunv.maplibrecompose.demoapp.demos
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import dev.sargunv.maplibrecompose.compose.ClickResult
 import dev.sargunv.maplibrecompose.compose.MaplibreMap
 import dev.sargunv.maplibrecompose.compose.layer.CircleLayer
 import dev.sargunv.maplibrecompose.compose.layer.SymbolLayer
@@ -37,6 +44,7 @@ private val LIME_GREEN = Color(50, 205, 5)
 fun ClusteredPointsDemo() = Column {
   val cameraState =
     rememberCameraState(firstPosition = CameraPosition(target = SEATTLE, zoom = 10.0))
+
   val coroutineScope = rememberCoroutineScope()
 
   MaplibreMap(modifier = Modifier.weight(1f), styleUrl = DEFAULT_STYLE, cameraState = cameraState) {
@@ -71,11 +79,12 @@ fun ClusteredPointsDemo() = Column {
             cameraState.animateTo(
               cameraState.position.copy(
                 target = (it as Point).coordinates,
-                zoom = cameraState.position.zoom + 1,
+                zoom = (cameraState.position.zoom + 2).coerceAtMost(20.0),
               )
             )
           }
-        }
+          ClickResult.Consume
+        } ?: ClickResult.Pass
       },
     )
 

@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalComposeLibrary::class)
 
+import fr.brouillard.oss.jgitver.Strategies
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -14,12 +15,37 @@ plugins {
   alias(libs.plugins.spotless)
   alias(libs.plugins.dokka)
   alias(libs.plugins.maven.publish)
+  alias(libs.plugins.jgitver)
   id("maven-publish")
 }
 
 group = "dev.sargunv.maplibre-compose"
 
-version = project.properties["LIBRARY_VERSION"]!!.toString()
+jgitver {
+  strategy(Strategies.MAVEN)
+  nonQualifierBranches("main")
+}
+
+dokka {
+  dokkaSourceSets {
+    configureEach {
+      includes.from("MODULE.md")
+      sourceLink {
+        remoteUrl("https://github.com/sargunv/maplibre-compose/tree/main/")
+        localDirectory.set(rootDir)
+      }
+      externalDocumentationLinks {
+        create("spatial-k") { url("https://dellisd.github.io/spatial-k/api/") }
+        create("maplibre-native") {
+          url("https://maplibre.org/maplibre-native/android/api/")
+          packageListUrl(
+            "https://maplibre.org/maplibre-native/android/api/-map-libre%20-native%20-android/package-list"
+          )
+        }
+      }
+    }
+  }
+}
 
 android {
   namespace = "dev.sargunv.maplibrecompose"
