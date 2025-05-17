@@ -5,25 +5,36 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
-  id("library-conventions")
-  id("android-library-conventions")
-  id(libs.plugins.kotlin.multiplatform.get().pluginId)
-  id(libs.plugins.kotlin.cocoapods.get().pluginId)
-  id(libs.plugins.kotlin.composeCompiler.get().pluginId)
-  id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.compose.get().pluginId)
-  id(libs.plugins.mavenPublish.get().pluginId)
+ // id("library-conventions")
+  //id("android-library-conventions")
+  id("org.jetbrains.kotlin.multiplatform") version("2.1.21")
+//  id(libs.plugins.kotlin.cocoapods.get().pluginId)
+  id("org.jetbrains.kotlin.plugin.compose") version("2.1.21")
+  id("com.android.library") version("8.9.3")
+  id("org.jetbrains.compose") version("1.8.0")
+//  id(libs.plugins.mavenPublish.get().pluginId)
 }
 
-android { namespace = "dev.sargunv.maplibrecompose" }
+android {
+  namespace = "dev.sargunv.maplibrecompose"
+  compileSdk = 35
 
-mavenPublishing {
-  pom {
-    name = "MapLibre Compose"
-    description = "Add interactive vector tile maps to your Compose app"
-    url = "https://github.com/sargunv/maplibre-compose"
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
   }
+//  kotlinOptions {
+//    jvmTarget = "17"
+//  }
 }
+
+//mavenPublishing {
+//  pom {
+//    name = "MapLibre Compose"
+//    description = "Add interactive vector tile maps to your Compose app"
+//    url = "https://github.com/sargunv/maplibre-compose"
+//  }
+//}
 
 val desktopResources: Configuration by
   configurations.creating {
@@ -31,11 +42,11 @@ val desktopResources: Configuration by
     isCanBeResolved = true
   }
 
-dependencies {
-  desktopResources(
-    project(path = ":lib:maplibre-compose-webview", configuration = "jsBrowserDistribution")
-  )
-}
+//dependencies {
+//  desktopResources(
+//    project(path = ":lib:maplibre-compose-webview", configuration = "jsBrowserDistribution")
+//  )
+//}
 
 val copyDesktopResources by
   tasks.registering(Copy::class) {
@@ -46,52 +57,52 @@ val copyDesktopResources by
 
 kotlin {
   androidTarget {
-    compilerOptions { jvmTarget = project.getJvmTarget() }
+    //compilerOptions { jvmTarget = project.getJvmTarget() }
     instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     publishLibraryVariants("release", "debug")
   }
   iosArm64()
   iosSimulatorArm64()
   iosX64()
-  jvm("desktop") { compilerOptions { jvmTarget = project.getJvmTarget() } }
-  js(IR) { browser() }
+  //jvm("desktop") { compilerOptions { jvmTarget = project.getJvmTarget() } }
+  //js(IR) { browser() }
 
-  cocoapods {
-    noPodspec()
-    ios.deploymentTarget = project.properties["iosDeploymentTarget"]!!.toString()
-    pod("MapLibre", libs.versions.maplibre.ios.get())
-  }
+//  cocoapods {
+//    noPodspec()
+//    ios.deploymentTarget = project.properties["iosDeploymentTarget"]!!.toString()
+//    pod("MapLibre", libs.versions.maplibre.ios.get())
+//  }
 
   sourceSets {
-    val desktopMain by getting
+   // val desktopMain by getting
 
-    listOf(iosMain, iosArm64Main, iosSimulatorArm64Main, iosX64Main).forEach {
-      it { languageSettings { optIn("kotlinx.cinterop.ExperimentalForeignApi") } }
-    }
+//    listOf(iosMain, iosArm64Main, iosSimulatorArm64Main, iosX64Main).forEach {
+//      it { languageSettings { optIn("kotlinx.cinterop.ExperimentalForeignApi") } }
+//    }
 
     commonMain.dependencies {
       implementation(compose.foundation)
       implementation(compose.components.resources)
-      api(libs.kermit)
+      api("co.touchlab:kermit:2.0.5")
       api(libs.spatialk.geojson)
-      api(project(":lib:maplibre-compose-expressions"))
+      api(project(":maplibre-compose:lib:maplibre-compose-expressions"))
     }
 
     androidMain.dependencies {
-      api(libs.maplibre.android)
-      implementation(libs.maplibre.android.scalebar)
+      api("org.maplibre.gl:android-sdk:11.8.8")
+      implementation("org.maplibre.gl:android-plugin-scalebar-v9:3.0.2")
     }
 
-    desktopMain.dependencies {
-      implementation(compose.desktop.common)
-      implementation(libs.kotlinx.coroutines.swing)
-      implementation(libs.webview)
-    }
-
-    jsMain.dependencies {
-      implementation(project(":lib:kotlin-maplibre-js"))
-      implementation(project(":lib:compose-html-interop"))
-    }
+//    desktopMain.dependencies {
+//      implementation(compose.desktop.common)
+//      implementation(libs.kotlinx.coroutines.swing)
+//      implementation(libs.webview)
+//    }
+//
+//    jsMain.dependencies {
+//      implementation(project(":lib:kotlin-maplibre-js"))
+//      implementation(project(":lib:compose-html-interop"))
+//    }
 
     commonTest.dependencies {
       implementation(kotlin("test"))
@@ -103,10 +114,10 @@ kotlin {
 
     androidUnitTest.dependencies { implementation(compose.desktop.currentOs) }
 
-    androidInstrumentedTest.dependencies {
-      implementation(compose.desktop.uiTestJUnit4)
-      implementation(libs.androidx.composeUi.testManifest)
-    }
+//    androidInstrumentedTest.dependencies {
+//      implementation(compose.desktop.uiTestJUnit4)
+//      implementation(libs.androidx.composeUi.testManifest)
+//    }
   }
 }
 
