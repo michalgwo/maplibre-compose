@@ -10,7 +10,7 @@ plugins {
   id("org.jetbrains.kotlin.multiplatform") version("2.1.21")
   id("org.jetbrains.kotlin.plugin.compose") version("2.1.21")
   id("com.android.library") version("8.9.3")
-  id("org.jetbrains.compose") version("1.8.0")
+  id("org.jetbrains.compose") version("1.8.1")
  // id(libs.plugins.mavenPublish.get().pluginId)
 }
 
