@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
@@ -52,6 +54,7 @@ object SnapshotterDemo : Demo {
     val styleState = rememberStyleState()
     val isLoading = remember { mutableStateOf(false) }
     val snapshot = remember { mutableStateOf<ImageBitmap?>(null) }
+    val snapshotError = remember { mutableStateOf<String?>(null) }
     val lifeCycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifeCycleOwner) {
@@ -80,10 +83,19 @@ object SnapshotterDemo : Demo {
           }
         }
 
-        SnapshotterControls(cameraState, isLoading, snapshot)
+        SnapshotterControls(cameraState, isLoading, snapshot, snapshotError)
 
         snapshot.value?.let {
           SnapshotDialog(snapshot = it, onDismissRequest = { snapshot.value = null })
+        }
+
+        snapshotError.value?.let {
+          AlertDialog(
+            onDismissRequest = { snapshotError.value = null },
+            title = { Text(text = "Error during snapshot generation") },
+            text = { Text(text = it) },
+            confirmButton = { TextButton(onClick = { snapshotError.value = null }) { Text("OK") } },
+          )
         }
       }
     }
@@ -94,6 +106,7 @@ object SnapshotterDemo : Demo {
     cameraState: CameraState,
     isLoading: MutableState<Boolean>,
     snapshot: MutableState<ImageBitmap?>,
+    snapshotError: MutableState<String?>,
   ) {
     val scope = rememberCoroutineScope()
     var snapshotJob by remember { mutableStateOf<Job?>(null) }
@@ -117,7 +130,7 @@ object SnapshotterDemo : Demo {
 
                 snapshot.value = response
               } catch (error: SnapshotException) {
-                println("Error during snapshot generation: ${error.message}")
+                snapshotError.value = error.message
               } catch (error: CancellationException) {
                 println("Snapshot generation cancelled")
               }
