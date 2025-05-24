@@ -18,8 +18,8 @@ import org.maplibre.android.snapshotter.MapSnapshotter as MLNMapSnapshotter
 
 internal class AndroidMapSnapshotter(
   private val context: Context,
-  private val layoutDir: LayoutDirection,
-  private val density: Density,
+  internal var layoutDir: LayoutDirection,
+  internal var density: Density,
 ) : MapSnapshotter {
 
   override suspend fun snapshot(

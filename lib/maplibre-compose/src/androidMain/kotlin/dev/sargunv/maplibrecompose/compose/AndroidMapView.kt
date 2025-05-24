@@ -94,6 +94,8 @@ internal fun AndroidMapView(
     },
     update = { _ ->
       val map = currentMap ?: return@AndroidView
+      map.getMapSnapshotter().density = density
+      map.getMapSnapshotter().layoutDir = layoutDir
       map.layoutDir = layoutDir
       map.density = density
       map.callbacks = callbacks
