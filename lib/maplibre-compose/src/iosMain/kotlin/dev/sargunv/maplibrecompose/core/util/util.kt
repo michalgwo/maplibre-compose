@@ -1,6 +1,5 @@
 package dev.sargunv.maplibrecompose.core.util
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asSkiaBitmap
@@ -22,7 +21,6 @@ import cocoapods.MapLibre.MLNOrnamentPositionBottomRight
 import cocoapods.MapLibre.MLNOrnamentPositionTopLeft
 import cocoapods.MapLibre.MLNOrnamentPositionTopRight
 import cocoapods.MapLibre.MLNShape
-import cocoapods.MapLibre.MLNZoomLevelForAltitude
 import cocoapods.MapLibre.expressionWithMLNJSONObject
 import cocoapods.MapLibre.predicateWithMLNJSONObject
 import dev.sargunv.maplibrecompose.core.CameraPosition
