@@ -142,21 +142,6 @@ internal fun BoundingBox.toMLNCoordinateBounds(): CValue<MLNCoordinateBounds> =
     sw = southwest.toCLLocationCoordinate2D(),
   )
 
-internal fun MLNMapCamera.toCameraPosition(paddingValues: PaddingValues, size: CValue<CGSize>) =
-  CameraPosition(
-    target = centerCoordinate.toPosition(),
-    bearing = heading,
-    tilt = pitch,
-    zoom =
-      MLNZoomLevelForAltitude(
-        altitude = altitude,
-        pitch = pitch,
-        latitude = centerCoordinate.useContents { latitude },
-        size = size,
-      ),
-    padding = paddingValues,
-  )
-
 internal fun CameraPosition.toMLNMapCamera(size: CValue<CGSize>): MLNMapCamera {
   return MLNMapCamera().let {
     it.centerCoordinate = target.toCLLocationCoordinate2D()

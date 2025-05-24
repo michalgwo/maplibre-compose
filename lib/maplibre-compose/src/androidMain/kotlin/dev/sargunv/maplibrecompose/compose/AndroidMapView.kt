@@ -80,6 +80,7 @@ internal fun AndroidMapView(
                 mapView = mapView,
                 map = map,
                 scaleBar = AndroidScaleBar(context, mapView, map),
+                mapSnapshotter = AndroidMapSnapshotter(context, layoutDir, density),
                 layoutDir = layoutDir,
                 density = density,
                 callbacks = callbacks,

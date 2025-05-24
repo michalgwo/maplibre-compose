@@ -44,7 +44,6 @@ import dev.sargunv.maplibrecompose.core.util.toBoundingBox
 import dev.sargunv.maplibrecompose.core.util.toCGPoint
 import dev.sargunv.maplibrecompose.core.util.toCGRect
 import dev.sargunv.maplibrecompose.core.util.toCLLocationCoordinate2D
-import dev.sargunv.maplibrecompose.core.util.toCameraPosition
 import dev.sargunv.maplibrecompose.core.util.toDpOffset
 import dev.sargunv.maplibrecompose.core.util.toFeature
 import dev.sargunv.maplibrecompose.core.util.toMLNCoordinateBounds
@@ -378,22 +377,6 @@ internal class IosMap(
     mapView.scaleBar.hidden = !value.isScaleBarEnabled
     mapView.scaleBarPosition = value.scaleBarAlignment.toMLNOrnamentPosition(layoutDir)
     mapView.scaleBarMargins = calculateMargins(mapView.scaleBarPosition, value.padding)
-  }
-
-  private fun CameraPosition.toMLNMapCamera(): MLNMapCamera {
-    return MLNMapCamera().let {
-      it.centerCoordinate = target.toCLLocationCoordinate2D()
-      it.pitch = tilt
-      it.heading = bearing
-      it.altitude =
-        MLNAltitudeForZoomLevel(
-          zoomLevel = zoom,
-          pitch = tilt,
-          latitude = target.latitude,
-          size = size,
-        )
-      it
-    }
   }
 
   override fun getCameraPosition(): CameraPosition {
