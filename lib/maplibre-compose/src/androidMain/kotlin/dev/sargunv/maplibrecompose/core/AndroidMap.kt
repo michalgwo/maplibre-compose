@@ -277,6 +277,8 @@ internal class AndroidMap(
     override fun onFinish() = cont.resume(Unit)
   }
 
+  override fun getStyleUri() = lastStyleUri
+
   override suspend fun animateCameraPosition(finalPosition: CameraPosition, duration: Duration) =
     suspendCoroutine { cont ->
       map.animateCamera(

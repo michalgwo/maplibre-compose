@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import dev.sargunv.maplibrecompose.core.util.correctedAndroidUri
 import dev.sargunv.maplibrecompose.core.util.toLatLngBounds
@@ -23,30 +22,28 @@ internal class AndroidMapSnapshotter(
 ) : MapSnapshotter {
 
   override suspend fun snapshot(
-    width: Dp,
-    height: Dp,
+    width: Int,
+    height: Int,
     styleUri: String,
     region: BoundingBox?,
     cameraPosition: CameraPosition?,
     showLogo: Boolean,
   ): ImageBitmap {
-    with(density) {
-      val styleBuilder = Style.Builder().fromUri(styleUri.correctedAndroidUri())
-      val options =
-        MLNMapSnapshotter.Options(width.roundToPx(), height.roundToPx())
-          .withStyleBuilder(styleBuilder)
-          .withRegion(region?.toLatLngBounds())
-          .withCameraPosition(cameraPosition?.toMLNCameraPosition(this, layoutDir))
-          .withLogo(showLogo)
+    val styleBuilder = Style.Builder().fromUri(styleUri.correctedAndroidUri())
+    val options =
+      MLNMapSnapshotter.Options(width, height)
+        .withStyleBuilder(styleBuilder)
+        .withRegion(region?.toLatLngBounds())
+        .withCameraPosition(cameraPosition?.toMLNCameraPosition(density, layoutDir))
+        .withLogo(showLogo)
 
-      val snapshotter = MLNMapSnapshotter(context, options)
+    val snapshotter = MLNMapSnapshotter(context, options)
 
-      return suspendCancellableCoroutine { cont ->
-        snapshotter.start({ snapshot -> cont.resume(snapshot.bitmap.asImageBitmap()) }) { error ->
-          cont.resumeWithException(SnapshotException(error))
-        }
-        cont.invokeOnCancellation { snapshotter.cancel() }
+    return suspendCancellableCoroutine { cont ->
+      snapshotter.start({ snapshot -> cont.resume(snapshot.bitmap.asImageBitmap()) }) { error ->
+        cont.resumeWithException(SnapshotException(error))
       }
+      cont.invokeOnCancellation { snapshotter.cancel() }
     }
   }
 }

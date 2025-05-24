@@ -242,6 +242,8 @@ internal class JsMap(
     )
   }
 
+  override fun getStyleUri() = lastStyleUri
+
   override suspend fun animateCameraPosition(finalPosition: CameraPosition, duration: Duration) {
     impl.easeTo(
       EaseToOptions(

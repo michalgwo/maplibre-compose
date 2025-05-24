@@ -410,6 +410,8 @@ internal class IosMap(
       right = calculateRightPadding(layoutDir).value.toDouble(),
     )
 
+  override fun getStyleUri() = lastStyleUri
+
   override suspend fun animateCameraPosition(finalPosition: CameraPosition, duration: Duration) =
     suspendCoroutine { cont ->
       mapView.flyToCamera(

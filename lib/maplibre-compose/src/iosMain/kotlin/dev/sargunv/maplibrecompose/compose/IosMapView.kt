@@ -87,7 +87,7 @@ internal fun IosMapView(
               IosMap(
                 mapView = mapView,
                 size = CGSizeMake(width.value.toDouble(), height.value.toDouble()),
-                mapSnapshotter = IosMapSnapshotter(density),
+                mapSnapshotter = IosMapSnapshotter(),
                 layoutDir = layoutDir,
                 density = density,
                 insetPadding = insetPadding,

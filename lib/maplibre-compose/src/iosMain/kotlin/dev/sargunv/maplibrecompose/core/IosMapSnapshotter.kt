@@ -1,8 +1,6 @@
 package dev.sargunv.maplibrecompose.core
 
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import cocoapods.MapLibre.MLNMapCamera
 import cocoapods.MapLibre.MLNMapSnapshotOptions
 import cocoapods.MapLibre.MLNMapSnapshotter
@@ -16,39 +14,38 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.CoreGraphics.CGSizeMake
 import platform.Foundation.NSURL
 
-internal class IosMapSnapshotter(private val density: Density) : MapSnapshotter {
+internal class IosMapSnapshotter : MapSnapshotter {
   override suspend fun snapshot(
-    width: Dp,
-    height: Dp,
+    width: Int,
+    height: Int,
     styleUri: String,
     region: BoundingBox?,
     cameraPosition: CameraPosition?,
     showLogo: Boolean,
   ): ImageBitmap {
-    with(density) {
-      val size = CGSizeMake(width.roundToPx().toDouble(), height.roundToPx().toDouble())
-      val options =
-        MLNMapSnapshotOptions(
-          styleURL = NSURL(string = styleUri),
-          camera = cameraPosition?.toMLNMapCamera(size) ?: MLNMapCamera(),
-          size = size,
-        )
-      cameraPosition?.zoom?.let { options.zoomLevel = it }
-      region?.toMLNCoordinateBounds()?.let { options.coordinateBounds = it }
-      options.showsLogo = showLogo
+    val size = CGSizeMake(width.toDouble(), height.toDouble())
+    val options =
+      MLNMapSnapshotOptions(
+        styleURL = NSURL(string = styleUri),
+        camera = cameraPosition?.toMLNMapCamera(size) ?: MLNMapCamera(),
+        size = size,
+      )
 
-      val snapshotter = MLNMapSnapshotter(options)
+    cameraPosition?.zoom?.let { options.zoomLevel = it }
+    region?.toMLNCoordinateBounds()?.let { options.coordinateBounds = it }
+    options.showsLogo = showLogo
 
-      return suspendCancellableCoroutine { cont ->
-        snapshotter.startWithCompletionHandler { snapshot, error ->
-          if (snapshot != null) {
-            cont.resume(snapshot.image.toImageBitmap())
-          } else {
-            cont.resumeWithException(SnapshotException(error?.description ?: "Unknown error"))
-          }
+    val snapshotter = MLNMapSnapshotter(options)
+
+    return suspendCancellableCoroutine { cont ->
+      snapshotter.startWithCompletionHandler { snapshot, error ->
+        if (snapshot != null) {
+          cont.resume(snapshot.image.toImageBitmap())
+        } else {
+          cont.resumeWithException(SnapshotException(error?.description ?: "Unknown error"))
         }
-        cont.invokeOnCancellation { snapshotter.cancel() }
       }
+      cont.invokeOnCancellation { snapshotter.cancel() }
     }
   }
 }

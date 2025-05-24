@@ -110,9 +110,8 @@ object SnapshotterDemo : Demo {
               try {
                 val response =
                   cameraState.snapshot(
-                    width = 500.dp,
-                    height = 500.dp,
-                    styleUri = DEFAULT_STYLE,
+                    width = 512,
+                    height = 512,
                     cameraPosition = cameraState.position,
                   )
 
