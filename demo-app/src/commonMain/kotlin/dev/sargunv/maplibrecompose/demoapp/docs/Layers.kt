@@ -36,14 +36,14 @@ fun Layers() {
     val amtrakStations =
       rememberGeoJsonSource(
         id = "amtrak-stations",
-        uri = GeoJsonData.Uri(Res.getUri("files/data/amtrak_stations.geojson")),
+        data = GeoJsonData.Uri(Res.getUri("files/data/amtrak_stations.geojson")),
       )
 
     // -8<- [start:amtrak-1]
     val amtrakRoutes =
       rememberGeoJsonSource(
         id = "amtrak-routes",
-        uri = GeoJsonData.Uri(Res.getUri("files/data/amtrak_routes.geojson")),
+        data = GeoJsonData.Uri(Res.getUri("files/data/amtrak_routes.geojson")),
       )
     LineLayer(
       id = "amtrak-routes-casing",

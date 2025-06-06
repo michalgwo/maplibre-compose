@@ -33,7 +33,7 @@ public fun rememberOfflinePacksSource(
     id = id,
     options = options,
     data =
-      GeoJsonData.GeoJson(
+      GeoJsonData.Features(
         featureCollection {
           offlinePacks.forEach { pack ->
             feature(pack.definition.geometry) {

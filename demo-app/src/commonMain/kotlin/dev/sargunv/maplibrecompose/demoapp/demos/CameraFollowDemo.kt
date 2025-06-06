@@ -89,7 +89,7 @@ object CameraFollowDemo : Demo {
               LocationPuckLayers(
                 idPrefix = "target",
                 locationSource =
-                  rememberGeoJsonSource("target", GeoJsonData.GeoJson(Point(animatedPosition))),
+                  rememberGeoJsonSource("target", GeoJsonData.Features(Point(animatedPosition))),
               )
             }
           }

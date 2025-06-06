@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -194,7 +193,7 @@ private fun rememberLocationStatusState(): State<TrackingStatus> {
 @Composable
 private fun LocationPuck(location: Location) {
   val locationSource =
-    rememberGeoJsonSource(id = "location", data = GeoJsonData.GeoJson(Point(location.position)))
+    rememberGeoJsonSource(id = "location", data = GeoJsonData.Features(Point(location.position)))
   LocationPuckLayers(idPrefix = "user-location", locationSource = locationSource)
 }
 

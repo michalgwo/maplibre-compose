@@ -14,16 +14,14 @@ public actual class GeoJsonSource : Source {
     impl = source
   }
 
-  public actual constructor(id: String, uri: GeoJsonData.Uri, options: GeoJsonOptions) {
-    impl = MLNGeoJsonSource(id, URI(uri.data), buildOptionMap(options))
-  }
-
-  public actual constructor(id: String, geoJson: GeoJsonData.GeoJson, options: GeoJsonOptions) {
-    impl = MLNGeoJsonSource(id, geoJson.data.json(), buildOptionMap(options))
-  }
-
-  public actual constructor(id: String, geoJson: GeoJsonData.JsonString, options: GeoJsonOptions) {
-    impl = MLNGeoJsonSource(id, geoJson.data, buildOptionMap(options))
+  public actual constructor(id: String, data: GeoJsonData, options: GeoJsonOptions) {
+    impl =
+      when (data) {
+        is GeoJsonData.Features ->
+          MLNGeoJsonSource(id, data.geoJson.json(), buildOptionMap(options))
+        is GeoJsonData.JsonString -> MLNGeoJsonSource(id, data.json, buildOptionMap(options))
+        is GeoJsonData.Uri -> MLNGeoJsonSource(id, URI(data.uri), buildOptionMap(options))
+      }
   }
 
   private fun buildOptionMap(options: GeoJsonOptions) =
@@ -45,15 +43,11 @@ public actual class GeoJsonSource : Source {
       }
     }
 
-  public actual fun setUri(uri: GeoJsonData.Uri) {
-    impl.setUri(uri.data.correctedAndroidUri())
-  }
-
-  public actual fun setData(geoJson: GeoJsonData.GeoJson) {
-    impl.setGeoJson(geoJson.data.json())
-  }
-
-  public actual fun setData(geoJson: GeoJsonData.JsonString) {
-    impl.setGeoJson(geoJson.data)
+  public actual fun setData(data: GeoJsonData) {
+    when (data) {
+      is GeoJsonData.Features -> impl.setGeoJson(data.geoJson.json())
+      is GeoJsonData.JsonString -> impl.setGeoJson(data.json)
+      is GeoJsonData.Uri -> impl.setUri(data.uri.correctedAndroidUri())
+    }
   }
 }

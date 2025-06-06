@@ -59,7 +59,7 @@ object AnimatedLayerDemo : Demo {
           val routeSource =
             rememberGeoJsonSource(
               id = "amtrak-routes",
-              uri = GeoJsonData.Uri(Res.getUri(ROUTES_FILE)),
+              data = GeoJsonData.Uri(Res.getUri(ROUTES_FILE)),
             )
 
           val infiniteTransition = rememberInfiniteTransition()

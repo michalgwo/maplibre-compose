@@ -24,8 +24,8 @@ abstract class StyleNodeTest {
   private val testSources by lazy {
     listOf(
       VectorSource("foo", "https://example.com/{z}/{x}/{y}.pbf"),
-      GeoJsonSource("bar", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions()),
-      GeoJsonSource("baz", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions()),
+      GeoJsonSource("bar", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions()),
+      GeoJsonSource("baz", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions()),
     )
   }
 
@@ -57,7 +57,7 @@ abstract class StyleNodeTest {
     runOnUiThread {
       val s = makeStyleNode()
       val newSource =
-        GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+        GeoJsonSource("new", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions())
       s.sourceManager.addReference(newSource)
       s.onEndChanges()
       assertEquals(4, s.style.getSources().size)
@@ -70,7 +70,7 @@ abstract class StyleNodeTest {
     runOnUiThread {
       val s = makeStyleNode()
       val newSource =
-        GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+        GeoJsonSource("new", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions())
       s.sourceManager.addReference(newSource)
       s.onEndChanges()
       s.sourceManager.removeReference(newSource)
@@ -85,7 +85,7 @@ abstract class StyleNodeTest {
       val s = makeStyleNode()
       assertFails {
         s.sourceManager.addReference(
-          GeoJsonSource("foo", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+          GeoJsonSource("foo", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions())
         )
       }
     }
@@ -103,8 +103,8 @@ abstract class StyleNodeTest {
   fun shouldAllowAddSourceBeforeRemove() = runComposeUiTest {
     runOnUiThread {
       val s = makeStyleNode()
-      val s1 = GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
-      val s2 = GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+      val s1 = GeoJsonSource("new", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions())
+      val s2 = GeoJsonSource("new", GeoJsonData.Features(FeatureCollection()), GeoJsonOptions())
 
       s.sourceManager.addReference(s1)
       s.onEndChanges()
