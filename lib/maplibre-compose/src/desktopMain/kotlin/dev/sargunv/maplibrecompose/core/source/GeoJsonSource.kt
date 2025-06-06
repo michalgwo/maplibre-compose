@@ -6,15 +6,21 @@ public actual class GeoJsonSource : Source {
 
   @Suppress("UNREACHABLE_CODE") override val impl: Nothing = TODO()
 
-  public actual constructor(id: String, uri: String, options: GeoJsonOptions)
+  public actual constructor(id: String, uri: Uri, options: GeoJsonOptions)
 
   public actual constructor(id: String, data: GeoJson, options: GeoJsonOptions)
 
-  public actual fun setUri(uri: String) {
+  public actual constructor(id: String, data: String, options: GeoJsonOptions)
+
+  public actual fun setUri(uri: Uri) {
     TODO()
   }
 
   public actual fun setData(geoJson: GeoJson) {
+    TODO()
+  }
+
+  public actual fun setData(geoJson: String) {
     TODO()
   }
 }
