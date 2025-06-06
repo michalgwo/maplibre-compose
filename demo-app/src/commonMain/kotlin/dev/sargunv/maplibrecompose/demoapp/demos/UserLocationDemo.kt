@@ -33,6 +33,7 @@ import dev.sargunv.maplibrecompose.compose.rememberCameraState
 import dev.sargunv.maplibrecompose.compose.rememberStyleState
 import dev.sargunv.maplibrecompose.compose.source.rememberGeoJsonSource
 import dev.sargunv.maplibrecompose.core.CameraMoveReason
+import dev.sargunv.maplibrecompose.core.source.GeoJsonData
 import dev.sargunv.maplibrecompose.demoapp.DEFAULT_STYLE
 import dev.sargunv.maplibrecompose.demoapp.Demo
 import dev.sargunv.maplibrecompose.demoapp.DemoMapControls
@@ -192,7 +193,8 @@ private fun rememberLocationStatusState(): State<TrackingStatus> {
 
 @Composable
 private fun LocationPuck(location: Location) {
-  val locationSource = rememberGeoJsonSource(id = "location", data = Point(location.position))
+  val locationSource =
+    rememberGeoJsonSource(id = "location", data = GeoJsonData.GeoJson(Point(location.position)))
   LocationPuckLayers(idPrefix = "user-location", locationSource = locationSource)
 }
 

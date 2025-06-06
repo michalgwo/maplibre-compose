@@ -13,7 +13,6 @@ import cocoapods.MapLibre.MLNShapeSourceOptionSimplificationTolerance
 import dev.sargunv.maplibrecompose.core.util.toMLNShape
 import dev.sargunv.maplibrecompose.core.util.toNSExpression
 import dev.sargunv.maplibrecompose.expressions.ExpressionContext
-import io.github.dellisd.spatialk.geojson.GeoJson
 import platform.Foundation.NSNumber
 import platform.Foundation.NSURL
 
@@ -24,23 +23,31 @@ public actual class GeoJsonSource : Source {
     impl = source
   }
 
-  public actual constructor(id: String, uri: Uri, options: GeoJsonOptions) {
+  public actual constructor(id: String, uri: GeoJsonData.Uri, options: GeoJsonOptions) {
     impl =
       MLNShapeSource(
         identifier = id,
-        URL = NSURL(string = uri.uri),
+        URL = NSURL(string = uri.data),
         options = buildOptionMap(options),
       )
   }
 
-  public actual constructor(id: String, data: GeoJson, options: GeoJsonOptions) {
+  public actual constructor(id: String, geoJson: GeoJsonData.GeoJson, options: GeoJsonOptions) {
     impl =
-      MLNShapeSource(identifier = id, shape = data.toMLNShape(), options = buildOptionMap(options))
+      MLNShapeSource(
+        identifier = id,
+        shape = geoJson.data.toMLNShape(),
+        options = buildOptionMap(options),
+      )
   }
 
-  public actual constructor(id: String, data: String, options: GeoJsonOptions) {
+  public actual constructor(id: String, geoJson: GeoJsonData.JsonString, options: GeoJsonOptions) {
     impl =
-      MLNShapeSource(identifier = id, shape = data.toMLNShape(), options = buildOptionMap(options))
+      MLNShapeSource(
+        identifier = id,
+        shape = geoJson.data.toMLNShape(),
+        options = buildOptionMap(options),
+      )
   }
 
   private fun buildOptionMap(options: GeoJsonOptions) =
@@ -64,15 +71,15 @@ public actual class GeoJsonSource : Source {
       )
     }
 
-  public actual fun setUri(uri: Uri) {
-    impl.setURL(NSURL(string = uri.uri))
+  public actual fun setUri(uri: GeoJsonData.Uri) {
+    impl.setURL(NSURL(string = uri.data))
   }
 
-  public actual fun setData(geoJson: GeoJson) {
-    impl.setShape(geoJson.toMLNShape())
+  public actual fun setData(geoJson: GeoJsonData.GeoJson) {
+    impl.setShape(geoJson.data.toMLNShape())
   }
 
-  public actual fun setData(geoJson: String) {
-    impl.setShape(geoJson.toMLNShape())
+  public actual fun setData(geoJson: GeoJsonData.JsonString) {
+    impl.setShape(geoJson.data.toMLNShape())
   }
 }

@@ -1,26 +1,24 @@
 package dev.sargunv.maplibrecompose.core.source
 
-import io.github.dellisd.spatialk.geojson.GeoJson
-
 public actual class GeoJsonSource : Source {
 
   @Suppress("UNREACHABLE_CODE") override val impl: Nothing = TODO()
 
-  public actual constructor(id: String, uri: Uri, options: GeoJsonOptions)
+  public actual constructor(id: String, uri: GeoJsonData.Uri, options: GeoJsonOptions)
 
-  public actual constructor(id: String, data: GeoJson, options: GeoJsonOptions)
+  public actual constructor(id: String, geoJson: GeoJsonData.GeoJson, options: GeoJsonOptions)
 
-  public actual constructor(id: String, data: String, options: GeoJsonOptions)
+  public actual constructor(id: String, geoJson: GeoJsonData.JsonString, options: GeoJsonOptions)
 
-  public actual fun setUri(uri: Uri) {
+  public actual fun setUri(uri: GeoJsonData.Uri) {
     TODO()
   }
 
-  public actual fun setData(geoJson: GeoJson) {
+  public actual fun setData(geoJson: GeoJsonData.GeoJson) {
     TODO()
   }
 
-  public actual fun setData(geoJson: String) {
+  public actual fun setData(geoJson: GeoJsonData.JsonString) {
     TODO()
   }
 }
