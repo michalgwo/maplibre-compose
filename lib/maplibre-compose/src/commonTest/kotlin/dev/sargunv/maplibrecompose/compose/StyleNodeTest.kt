@@ -56,7 +56,8 @@ abstract class StyleNodeTest {
   fun shouldAddUserSource() = runComposeUiTest {
     runOnUiThread {
       val s = makeStyleNode()
-      val newSource = GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+      val newSource =
+        GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
       s.sourceManager.addReference(newSource)
       s.onEndChanges()
       assertEquals(4, s.style.getSources().size)
@@ -68,7 +69,8 @@ abstract class StyleNodeTest {
   fun shouldRemoveUserSource() = runComposeUiTest {
     runOnUiThread {
       val s = makeStyleNode()
-      val newSource = GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+      val newSource =
+        GeoJsonSource("new", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
       s.sourceManager.addReference(newSource)
       s.onEndChanges()
       s.sourceManager.removeReference(newSource)
@@ -82,7 +84,9 @@ abstract class StyleNodeTest {
     runOnUiThread {
       val s = makeStyleNode()
       assertFails {
-        s.sourceManager.addReference(GeoJsonSource("foo", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions()))
+        s.sourceManager.addReference(
+          GeoJsonSource("foo", GeoJsonData.GeoJson(FeatureCollection()), GeoJsonOptions())
+        )
       }
     }
   }
