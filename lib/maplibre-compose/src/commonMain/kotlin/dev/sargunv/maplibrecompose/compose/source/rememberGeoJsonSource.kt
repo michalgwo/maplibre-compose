@@ -45,7 +45,8 @@ public fun rememberGeoJsonSource(
   }
 
 /**
- * Remember a new [GeoJsonSource] with the given [id] and [options] from the given serialized GeoJson [data].
+ * Remember a new [GeoJsonSource] with the given [id] and [options] from the given serialized
+ * GeoJson [data].
  *
  * @throws IllegalArgumentException if a layer with the given [id] already exists.
  */
