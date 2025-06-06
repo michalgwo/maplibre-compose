@@ -24,12 +24,21 @@ public actual class GeoJsonSource : Source {
     impl = source
   }
 
-  public actual constructor(id: String, uri: String, options: GeoJsonOptions) {
+  public actual constructor(id: String, uri: Uri, options: GeoJsonOptions) {
     impl =
-      MLNShapeSource(identifier = id, URL = NSURL(string = uri), options = buildOptionMap(options))
+      MLNShapeSource(
+        identifier = id,
+        URL = NSURL(string = uri.uri),
+        options = buildOptionMap(options),
+      )
   }
 
   public actual constructor(id: String, data: GeoJson, options: GeoJsonOptions) {
+    impl =
+      MLNShapeSource(identifier = id, shape = data.toMLNShape(), options = buildOptionMap(options))
+  }
+
+  public actual constructor(id: String, data: String, options: GeoJsonOptions) {
     impl =
       MLNShapeSource(identifier = id, shape = data.toMLNShape(), options = buildOptionMap(options))
   }
@@ -55,11 +64,15 @@ public actual class GeoJsonSource : Source {
       )
     }
 
-  public actual fun setUri(uri: String) {
-    impl.setURL(NSURL(string = uri))
+  public actual fun setUri(uri: Uri) {
+    impl.setURL(NSURL(string = uri.uri))
   }
 
   public actual fun setData(geoJson: GeoJson) {
+    impl.setShape(geoJson.toMLNShape())
+  }
+
+  public actual fun setData(geoJson: String) {
     impl.setShape(geoJson.toMLNShape())
   }
 }

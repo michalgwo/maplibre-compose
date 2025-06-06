@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import dev.sargunv.maplibrecompose.core.source.GeoJsonOptions
 import dev.sargunv.maplibrecompose.core.source.GeoJsonSource
+import dev.sargunv.maplibrecompose.core.source.Uri
 import io.github.dellisd.spatialk.geojson.GeoJson
 
 /**
@@ -15,7 +16,7 @@ import io.github.dellisd.spatialk.geojson.GeoJson
 @Composable
 public fun rememberGeoJsonSource(
   id: String,
-  uri: String,
+  uri: Uri,
   options: GeoJsonOptions = GeoJsonOptions(),
 ): GeoJsonSource =
   key(id, options) {
@@ -34,6 +35,19 @@ public fun rememberGeoJsonSource(
 public fun rememberGeoJsonSource(
   id: String,
   data: GeoJson,
+  options: GeoJsonOptions = GeoJsonOptions(),
+): GeoJsonSource =
+  key(id, options) {
+    rememberUserSource(
+      factory = { GeoJsonSource(id = id, data = data, options = options) },
+      update = { setData(data) },
+    )
+  }
+
+@Composable
+public fun rememberGeoJsonSource(
+  id: String,
+  data: String,
   options: GeoJsonOptions = GeoJsonOptions(),
 ): GeoJsonSource =
   key(id, options) {
