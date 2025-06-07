@@ -6,23 +6,23 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-  id("library-conventions")
-  id("android-library-conventions")
-  id(libs.plugins.kotlin.multiplatform.get().pluginId)
-  id(libs.plugins.kotlin.cocoapods.get().pluginId)
-  id(libs.plugins.kotlin.composeCompiler.get().pluginId)
-  id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.compose.get().pluginId)
-  id(libs.plugins.mavenPublish.get().pluginId)
+  // id("library-conventions")
+  //id("android-library-conventions")
+  id("org.jetbrains.kotlin.multiplatform") version("2.1.21")
+  id("org.jetbrains.kotlin.native.cocoapods") version("2.1.21")
+  id("org.jetbrains.kotlin.plugin.compose") version("2.1.21")
+  id("com.android.library") version("8.7.3")
+  id("org.jetbrains.compose") version("1.8.1")
+//  id(libs.plugins.mavenPublish.get().pluginId)
 }
 
-android { namespace = "dev.sargunv.maplibrecompose" }
+android {
+  namespace = "dev.sargunv.maplibrecompose"
+  compileSdk = 35
 
-mavenPublishing {
-  pom {
-    name = "MapLibre Compose"
-    description = "Add interactive vector tile maps to your Compose app"
-    url = "https://github.com/maplibre/maplibre-compose"
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
   }
 }
 
@@ -32,11 +32,11 @@ val desktopResources: Configuration by
     isCanBeResolved = true
   }
 
-dependencies {
-  desktopResources(
-    project(path = ":lib:maplibre-compose-webview", configuration = "jsBrowserDistribution")
-  )
-}
+//dependencies {
+//  desktopResources(
+//    project(path = ":lib:maplibre-compose-webview", configuration = "jsBrowserDistribution")
+//  )
+//}
 
 val copyDesktopResources by
   tasks.registering(Copy::class) {
@@ -47,7 +47,7 @@ val copyDesktopResources by
 
 kotlin {
   androidTarget {
-    compilerOptions { jvmTarget = project.getJvmTarget() }
+    //compilerOptions { jvmTarget = project.getJvmTarget() }
     instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     publishLibraryVariants("release", "debug")
   }
@@ -67,19 +67,19 @@ kotlin {
   iosSimulatorArm64 { configureIos() }
   iosX64 { configureIos() }
 
-  jvm("desktop") { compilerOptions { jvmTarget = project.getJvmTarget() } }
-  js(IR) { browser() }
+  //jvm("desktop") { compilerOptions { jvmTarget = project.getJvmTarget() } }
+  //js(IR) { browser() }
 
   applyDefaultHierarchyTemplate()
 
   cocoapods {
     noPodspec()
     ios.deploymentTarget = project.properties["iosDeploymentTarget"]!!.toString()
-    pod("MapLibre", libs.versions.maplibre.ios.get())
+    pod("MapLibre", "6.14.0")
   }
 
   sourceSets {
-    val desktopMain by getting
+    //val desktopMain by getting
 
     listOf(iosMain, iosArm64Main, iosSimulatorArm64Main, iosX64Main).forEach {
       it { languageSettings { optIn("kotlinx.cinterop.ExperimentalForeignApi") } }
@@ -88,9 +88,9 @@ kotlin {
     commonMain.dependencies {
       implementation(compose.foundation)
       implementation(compose.components.resources)
-      api(libs.kermit)
+      api("co.touchlab:kermit:2.0.5")
       api(libs.spatialk.geojson)
-      api(project(":lib:maplibre-compose-expressions"))
+      api(project(":maplibre-compose:lib:maplibre-compose-expressions"))
     }
 
     // used to share some implementation on platforms where Compose UI is backed by Skia directly
@@ -109,28 +109,21 @@ kotlin {
     androidMain {
       dependsOn(maplibreNativeMain)
       dependencies {
-        api(libs.maplibre.android)
-        implementation(libs.maplibre.android.scalebar)
+        api("org.maplibre.gl:android-sdk:11.9.0")
+        implementation("org.maplibre.gl:android-plugin-scalebar-v9:3.0.2")
       }
     }
 
-    // no idea why this is differently typed from the others
-    desktopMain.apply {
-      dependsOn(skiaMain)
-      dependencies {
-        implementation(compose.desktop.currentOs)
-        implementation(libs.kotlinx.coroutines.swing)
-        implementation(libs.webview)
-      }
-    }
+//    desktopMain.dependencies {
+//      implementation(compose.desktop.common)
+//      implementation(libs.kotlinx.coroutines.swing)
+//      implementation(libs.webview)
+//    }
 
-    jsMain {
-      dependsOn(skiaMain)
-      dependencies {
-        implementation(project(":lib:kotlin-maplibre-js"))
-        implementation(project(":lib:compose-html-interop"))
-      }
-    }
+//    jsMain.dependencies {
+//      implementation(project(":lib:kotlin-maplibre-js"))
+//      implementation(project(":lib:compose-html-interop"))
+//    }
 
     commonTest.dependencies {
       implementation(kotlin("test"))
@@ -142,10 +135,10 @@ kotlin {
 
     androidUnitTest.dependencies { implementation(compose.desktop.currentOs) }
 
-    androidInstrumentedTest.dependencies {
-      implementation(compose.desktop.uiTestJUnit4)
-      implementation(libs.androidx.composeUi.testManifest)
-    }
+//    androidInstrumentedTest.dependencies {
+//      implementation(compose.desktop.uiTestJUnit4)
+//      implementation(libs.androidx.composeUi.testManifest)
+//    }
   }
 }
 
