@@ -6,7 +6,7 @@ repositories {
   google()
 }
 
-kotlin { jvmToolchain(21) }
+kotlin { jvmToolchain(17) }
 
 dependencies {
   pluginImplementation(libs.plugins.android.application)

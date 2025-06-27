@@ -41,8 +41,10 @@ androidx-navigation = "2.9.0-beta03"
 gradle-kotlin = "2.2.0"
 #noinspection AndroidGradlePluginVersion: follow version matrix above
 gradle-android = "8.10.0"
+smartlookAnalytics = "2.3.30"
 
 [libraries]
+smartlook-analytics-android = { module = "com.smartlook.android:smartlook-analytics", version.ref = "smartlookAnalytics" }
 alchemist = { module = "io.github.kevincianfarini.alchemist:alchemist", version.ref = "alchemist" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-composeUi-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-compose" }

@@ -30,6 +30,7 @@ dependencyResolutionManagement {
     mavenCentral()
     // https://kevinnzou.github.io/compose-webview-multiplatform/installation/
     maven("https://jogamp.org/deployment/maven")
+    maven("https://sdk.smartlook.com/android/release")
   }
 }
 
