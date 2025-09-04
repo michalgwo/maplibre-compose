@@ -66,7 +66,7 @@ jobs:
           if-no-files-found: error
           name: natives-${{ matrix.variant }}
           path: |
-            "./lib/maplibre-native-bindings-jni/build/lib/${{ matrix.preset }}/shared/*"
+            ./lib/maplibre-native-bindings-jni/build/lib/${{ matrix.preset }}/shared/*
 
   publish-snapshot:
     needs: [check-last-run, build-natives]
@@ -92,8 +92,7 @@ jobs:
           name: natives-windows-amd64-opengl
           path: ./lib/maplibre-native-bindings-jni/build/copiedResources/WindowsAmd64Opengl/windows/amd64/opengl/
       - run: |
-          ./gradlew publishAllPublicationsToGitHubPackagesRepository \
-            -PconfigureForPublishing=true
+          ./gradlew publishAllPublicationsToGitHubPackagesRepository -PconfigureForPublishing=true
         env:
           ORG_GRADLE_PROJECT_githubToken: ${{ secrets.GITHUB_TOKEN }}
           ORG_GRADLE_PROJECT_githubUser: ${{ github.actor }}

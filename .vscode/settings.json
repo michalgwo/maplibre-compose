@@ -45,7 +45,4 @@
   "java.import.gradle.enabled": false,
   "java.server.launchMode": "LightWeight",
   "kotlin.languageServer.enabled": false,
-  "cmake.sourceDirectory": [
-    "/Users/sargunv/Code/maplibre-compose/lib/maplibre-native-bindings-jni"
-  ]
 }
