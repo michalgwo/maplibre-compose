@@ -86,23 +86,23 @@ internal class DesktopMapAdapter(internal var callbacks: MapAdapter.Callbacks) :
   }
 
   override fun setCameraBoundingBox(boundingBox: BoundingBox?) {
-    // TODO: bounds
+    map.bounds = map.bounds.copy(bounds = boundingBox?.toMlnLatLngBounds())
   }
 
   override fun setMaxZoom(maxZoom: Double) {
-    // TODO: bounds
+    map.bounds = map.bounds.copy(maxZoom = maxZoom)
   }
 
   override fun setMinZoom(minZoom: Double) {
-    // TODO: bounds
+    map.bounds = map.bounds.copy(minZoom = minZoom)
   }
 
   override fun setMinPitch(minPitch: Double) {
-    // TODO: bounds
+    map.bounds = map.bounds.copy(minPitch = minPitch)
   }
 
   override fun setMaxPitch(maxPitch: Double) {
-    // TODO: bounds
+    map.bounds = map.bounds.copy(maxPitch = maxPitch)
   }
 
   override fun getVisibleBoundingBox(): BoundingBox {

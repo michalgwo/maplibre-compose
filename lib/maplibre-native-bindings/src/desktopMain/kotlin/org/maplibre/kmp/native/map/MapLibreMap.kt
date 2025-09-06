@@ -129,9 +129,13 @@ public class MapLibreMap(
 
   // region Bounds
 
-  // TODO: setBounds(options)
+  public var bounds: BoundOptions
+    get() = getBoundsNative()
+    set(value) = setBoundsNative(value)
 
-  // TODO: getBounds()
+  private external fun setBoundsNative(options: BoundOptions)
+
+  private external fun getBoundsNative(): BoundOptions
 
   // endregion
 
