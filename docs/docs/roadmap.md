@@ -44,9 +44,9 @@ Next steps:
 - Add support for platform location services on macOS, Windows, and Linux.
 - Fix or investigate map loading on Linux (currently segfaults for unknown
   reason).
+- Improve stability on Windows.
 - Validate that display density is handled correctly on all three desktop
   platforms. On Linux, validate both Wayland and X11.
-- Fix keeping CAMetalLayer with the AWT Canvas on macOS.
 
 ### [JS Parity](https://github.com/maplibre/maplibre-compose/issues/222)
 
